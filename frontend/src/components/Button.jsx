@@ -3,7 +3,7 @@ import React from "react";
 
 function Button({ editHandleClick, list_id, handleClick, listId }) {
     return (
-        <div className='d-inline-block'>
+        <div className='button-holder   d-inline-block'>
             <button className='mx-2 btn btn-sm btn-warning'
                 onClick={() => editHandleClick(list_id)}>
                 <i className="bi bi-pencil-square"></i>

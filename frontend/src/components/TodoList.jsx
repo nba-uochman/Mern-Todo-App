@@ -42,7 +42,7 @@ function TodoList({ text, editItem, handleClick, listId, list_id }) {
                     </button>
                 </div>
                 :
-                <div className='py-2 border-bottom'>
+                <div className='button-container  py-2 border-bottom '>
                     <li className="list-item ms-3 py-2">{text}</li>
                     <Button
                         handleClick={handleClick}

@@ -47,3 +47,17 @@ input[type="text"]{
     width:55px !important;
     border-radius: 50% !important;
 }
+
+/* media queries */
+@media screen and (max-width:510px) {
+    .button-container{
+        position: relative;
+    }
+    .button-holder{
+        position: absolute;
+        right: 0;
+    }
+    .list-item{
+        display: inline;
+    }
+}
