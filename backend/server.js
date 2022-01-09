@@ -7,10 +7,8 @@ const app = express();
 const port = process.env.PORT || "8000";
 
 
-const config = require(__dirname + "/config");
-
-
 try {
+    const config = require(__dirname + "/configSettings");
     mongoose.connect(config.db.connection);
 } catch (err) {
     mongoose.connect(process.env.DB_CONFIG);
