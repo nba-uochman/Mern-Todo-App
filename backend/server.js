@@ -6,9 +6,6 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || "8000";
 
-// app.get("*", function (req, res) {
-//     res.sendFile(path.resolve(__dirname, "frontend", "public", "index.html"));
-// });
 
 const config = require(__dirname + "/config");
 
@@ -19,6 +16,7 @@ try {
     mongoose.connect(process.env.DB_CONFIG);
 }
 
+// app.use(express.static(path.join(__dirname, "frontend/build")));
 app.use(cors());
 app.use(express.json({
     type: ["application/json", "text/plain"]
@@ -26,6 +24,8 @@ app.use(express.json({
 
 const Todo = require(__dirname + "/model");
 
+
+// index route
 app.get("/todolist", async (req, res) => {
     const findLists = await Todo.find().exec();
     res.json(findLists);

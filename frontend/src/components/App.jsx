@@ -10,7 +10,7 @@ function App() {
     const [lists, setLists] = useState([]);
 
     window.addEventListener('DOMContentLoaded', (event) => {
-        axios.get("http://localhost:8000/todolist")
+        axios.get("/todolist")
             .then(res => {
                 setLists(res.data);
             })
@@ -20,7 +20,7 @@ function App() {
     function handleClick(event, todoList) {
         event.preventDefault();
 
-        axios.post("http://localhost:8000/todolist/new", { item: todoList })
+        axios.post("/todolist/new", { item: todoList })
             .then(res => {
                 setLists(res.data);
             })
@@ -29,7 +29,7 @@ function App() {
 
     //  update / edit list
     function updateList(DB_id, text) {
-        axios.post(`http://localhost:8000/todolist/${DB_id}/edit`, { item: text })
+        axios.post(`/todolist/${DB_id}/edit`, { item: text })
             .then(res => {
                 setLists(res.data);
             })
@@ -40,7 +40,7 @@ function App() {
     function deleteList(DB_id) {
 
         console.log(DB_id);
-        axios.get(`http://localhost:8000/todolist/${DB_id}/delete`)
+        axios.get(`/todolist/${DB_id}/delete`)
             .then(res => {
                 setLists(res.data);
             })
