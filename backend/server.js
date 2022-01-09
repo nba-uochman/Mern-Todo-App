@@ -16,7 +16,7 @@ try {
     mongoose.connect(process.env.DB_CONFIG);
 }
 
-// app.use(express.static(path.join(__dirname, "frontend/build")));
+app.use(express.static(path.join(__dirname, "frontend/build")));
 app.use(cors());
 app.use(express.json({
     type: ["application/json", "text/plain"]
@@ -99,6 +99,10 @@ if (process.env.NODE_ENV === "production") {
         res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
     });
 }
+
+app.get("*", function (req, res) {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+});
 
 app.listen(port, (err) => {
     if (err) return console.log(err, " failed to start backend");
