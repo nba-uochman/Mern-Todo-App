@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import TodoList from "./TodoList";
 import CreateList from "./CreateList";
 import axios from 'axios';
-
+import fingerprintjs from "@fingerprintjs/fingerprintjs";
 
 
 function App() {
-    const [lists, setLists] = useState([]);
 
+    // initial state for todolist and unique visitorId
+    const [lists, setLists] = useState([]);
+    const [visitor, setVisitor] = useState("");
+
+    // render all visitors list when the browser loads
     window.addEventListener('DOMContentLoaded', (event) => {
         axios.get("/todolist")
             .then(res => {
@@ -17,10 +21,22 @@ function App() {
             .catch(err => console.log(err));
     });
 
+    // generate unique string as visitorId 
+    useEffect(() => {
+        fingerprintjs.load().
+            then(res => res)
+            .then(fp => fp.get())
+            .then(result => {
+                setVisitor(result.visitorId);
+            })
+            .catch(err => console.log(err, " no visitor"));
+    });
+
+    // add new todolist
     function handleClick(event, todoList) {
         event.preventDefault();
 
-        axios.post("/todolist/new", { item: todoList })
+        axios.post("/todolist/new", { item: todoList, user: visitor })
             .then(res => {
                 setLists(res.data);
             })
@@ -29,6 +45,7 @@ function App() {
 
     //  update / edit list
     function updateList(DB_id, text) {
+
         axios.post(`/todolist/${DB_id}/edit`, { item: text })
             .then(res => {
                 setLists(res.data);
@@ -63,6 +80,7 @@ function App() {
                                     text={listItem.item}
                                     handleClick={deleteList}
                                     editItem={updateList}
+                                    uniqueId={listItem.user.userId}
                                 />
                             );
                         })

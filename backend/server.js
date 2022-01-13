@@ -1,12 +1,16 @@
+// *******************
+// npm import
+// *******************
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+// app config
 const app = express();
 const port = process.env.PORT || "8000";
 
-
+//  mongoose connection
 try {
     const config = require(__dirname + "/configSettings");
     mongoose.connect(config.db.connection);
@@ -14,12 +18,15 @@ try {
     mongoose.connect(process.env.DB_CONFIG);
 }
 
+// app use config
 app.use(express.static(path.join(__dirname, "frontend/build")));
 app.use(cors());
 app.use(express.json({
     type: ["application/json", "text/plain"]
 }));
 
+// mongoose model
+const UniqueId = require(__dirname + "/idModel");
 const Todo = require(__dirname + "/model");
 
 
@@ -31,18 +38,45 @@ app.get("/todolist", async (req, res) => {
 
 // recieve post request from client
 app.post("/todolist/new", async (req, res) => {
+    // console.log(req.body);
+
+    // for user
+    // const userId = req.body.user;
+    const newUser = ({
+        userId: req.body.user
+    });
+    try {
+        // save todo to db
+        const findUser = await UniqueId.find({ userId: req.body.user }).exec();
+        // search all user
+        if (findUser.length === 0) {
+            const saveUser = await UniqueId.create(newUser);
+        } else {
+            console.log("user already exit");
+            var userid = await UniqueId.findOne({ userId: req.body.user }).exec();
+            console.log(user);
+        }
+    } catch (err) {
+        console.log(err, "cannot add user....");
+    }
+    // user ends
+
     const todoList = req.body.item;
 
     const newTodo = ({
-        item: todoList
+        item: todoList,
+        user: {
+            id: userid._id,
+            userId: userid.userId
+        }
     });
 
     try {
         // save todo to db
         const saveList = await Todo.create(newTodo);
-
         // find all list in todoDB
         const findLists = await Todo.find().exec();
+        console.log("foundList ", findLists);
         res.json(findLists);
     } catch (err) {
         console.log(err, "cannot run....");
@@ -106,3 +140,8 @@ app.listen(port, (err) => {
     if (err) return console.log(err, " failed to start backend");
     console.log(`server runing on port ${port}`);
 });
+
+
+// **************************
+//  Code By NBA_UOCHMAN
+// **************************

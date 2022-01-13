@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import Button from './Button';
+import ListItems from "./ListItems";
 
 
-function TodoList({ text, editItem, handleClick, listId, list_id }) {
+function TodoList({ text, editItem, handleClick, listId, list_id, uniqueId }) {
 
     const [isEditable, setIsEditable] = useState(false);
     const [editList, setEditList] = useState("");
@@ -16,6 +18,7 @@ function TodoList({ text, editItem, handleClick, listId, list_id }) {
 
         setEditList(newEditInput);
     }
+
 
     return (
         <div>
@@ -33,6 +36,7 @@ function TodoList({ text, editItem, handleClick, listId, list_id }) {
                             setEditList("");
                             setIsEditable(false);
                         }
+
                         }>
                         <i className="bi bi-plus-circle"></i>
                     </button>
@@ -42,7 +46,18 @@ function TodoList({ text, editItem, handleClick, listId, list_id }) {
                     </button>
                 </div>
                 :
-                <div className='button-container  py-2 border-bottom '>
+                <ListItems
+                    text={text}
+                    handleClick={handleClick}
+                    list_id={list_id}
+                    editHandleClick={editHandleClick}
+                    uniqueId={uniqueId} />
+            }
+        </div>
+    )
+}
+
+{/* <div className='button-container  py-2 border-bottom '>
                     <li className="list-item ms-3 py-2">{text}</li>
                     <Button
                         handleClick={handleClick}
@@ -51,10 +66,6 @@ function TodoList({ text, editItem, handleClick, listId, list_id }) {
                         editHandleClick={editHandleClick}
                     />
 
-                </div>
-            }
-        </div>
-    )
-}
+                </div>  */}
 
 export default TodoList;
