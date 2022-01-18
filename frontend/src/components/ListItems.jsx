@@ -23,7 +23,7 @@ function ListItems({ text, handleClick, listId, list_id, editHandleClick, unique
         <div>
             {
                 id === uniqueId ?
-                    <div className='button-container  py-2 border-bottom '>
+                    <div className='button-container py-5 border-bottom '>
                         <li className="list-item ms-3 py-2">{text}</li>
                         <Button
                             handleClick={handleClick}

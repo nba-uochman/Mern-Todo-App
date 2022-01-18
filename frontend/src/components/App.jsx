@@ -13,13 +13,15 @@ function App() {
     const [visitor, setVisitor] = useState("");
 
     // render all visitors list when the browser loads
-    window.addEventListener('DOMContentLoaded', (event) => {
-        axios.get("/todolist")
-            .then(res => {
-                setLists(res.data);
-            })
-            .catch(err => console.log(err));
-    });
+    useEffect(() => {
+        window.addEventListener('DOMContentLoaded', (event) => {
+            axios.get("/todolist")
+                .then(res => {
+                    setLists(res.data);
+                })
+                .catch(err => console.log(err));
+        });
+    }, []);
 
     // generate unique string as visitorId 
     useEffect(() => {
@@ -54,15 +56,14 @@ function App() {
     }
 
     // delete list
-    function deleteList(DB_id) {
-
-        console.log(DB_id);
+    async function deleteList(DB_id) {
         axios.get(`/todolist/${DB_id}/delete`)
             .then(res => {
                 setLists(res.data);
             })
             .catch(err => console.log(err));
     }
+
 
     return (
 
